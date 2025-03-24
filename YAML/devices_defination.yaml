@@ -1,0 +1,98 @@
+# 设备定义文件格式规范 v1.0
+# 每个设备必须包含的字段：device_id, name, communication_type, connection_type
+# 可选字段：system, location, device_type
+
+electricity_meter_1:
+  # 基础信息 (对应devices表)
+  device_id: electricity_meter_1  # 必填：设备唯一标识
+  device_type: Acrel_DTSD1352_C  # 必填：设备型号
+  name: 二楼花园油烟机变频器15KW用电  # 选填：设备名称
+  system: fume_system            # 选填：系统分类
+  location: roof                 # 选填：位置信息
+  
+  # 通信配置
+  communication_type: meshtastic  # 必填：通信类型（meshtastic/lorawan/mqtt）
+  communication_id: R1000_3       # 必填：通信节点ID
+  connection_type: modbus_rtu     # 必填：连接类型（modbus_rtu/modbus_tcp）
+  
+  # 连接参数 (使用标准化的命名)
+  connection_params:
+    port_number: '2'              # 必填：485 接入端口号
+    slave_address: '3'            # 必填：从机地址
+    baud_rate: '9600'             # 选填：波特率 默认：9600
+    stop_bits: 1                  # 选填：停止位 默认：1
+    data_bits: 8                  # 选填：数据位 默认：8
+    parity: 'None'                # 选填：校验位（None/Even/Odd） 默认：None
+    timeout: 3.0                  # 选填：超时时间（秒） 默认：3.0
+    retry_count: 3                # 选填：重试次数 默认：3
+  
+  # 属性定义 (对应device_properties表)
+  properties:
+    EPI:  # <标记 ID 组，无实际意义>
+      property_id: EPI            # 必填：属性唯一标识
+      request_type: state         # 必填：请求类型（state/command）
+      description: 正向有功累计值（kwh）  # 可选：属性描述
+      
+      # Modbus命令参数
+      command:
+        function_code: "03"       # 必填：十六进制 功能码
+        register_address: "000A"  # 必填：十六进制 寄存器地址
+      
+      # 解析方法
+      parse_method:
+        data_type: numeric        # 必填：数据类型（numeric/enum）
+        data_length: 4            # 必填：字节数
+        byte_order: big_endian    # 可选：字节序（big_endian/little_endian）默认：big_endian
+        word_order: big_endian    # 可选：字序（big_endian/little_endian）默认：big_endian
+        scale_factor: 1           # 可选：比例因子 对应 factor_a 默认：1
+        offset: 0                 # 可选：偏移量 对应 factor_b 默认为 0
+
+    ALLP:  # <标记 ID 组，无实际意义>
+      property_id: ALLP            # 必填：属性唯一标识
+      request_type: state          # 必填：请求类型（state/command）
+      description: 合相功率（W）     # 可选：属性描述
+      command:
+        function_code: 3           # 必填：功能码
+        register_address: "016A"   # 必填：16进制地址
+
+      parse_method:
+        data_type: numeric         # 必填：数据类型（numeric/enum）
+        data_length: 4             # 必填：字节数
+        byte_order: big_endian     # 可选：字节序（big_endian/little_endian）默认：big_endian
+        word_order: big_endian     # 可选：字序（big_endian/little_endian）默认：big_endian
+        scale_factor: 1            # 可选：比例因子 对应 factor_a 默认：1
+        offset: 0                  # 可选：偏移量 对应 factor_b 默认为 0
+
+VFD_1:  # <标记 ID 组，无实际意义>
+  device_id: VFD_1                # 必填：设备唯一标识
+  name: 二楼花园油烟机变频器15KW  # 必填：设备名称
+  device_type: delta_VFD_TD500_TO150G3  # 可选：设备型号
+  system: fume_system             # 可选：系统分类
+  location: roof                  # 可选：位置信息
+  
+  communication_type: meshtastic  # 必填：通信类型
+  communication_id: R1000_3       # 必填：通信节点ID
+  connection_type: modbus_rtu     # 必填：连接类型
+  
+  connection_params:
+    port_number: '3'              # 必填：485 接入端口号
+    slave_address: '01'           # 必填：十六进制 从机地址 默认：01
+    baud_rate: '9600'             # 选填：波特率 默认：9600
+    parity: "None"                # 选填：校验位（None/Even/Odd） 默认：None
+    timeout: 3.0                  # 选填：超时时间（秒） 默认：3.0
+    retry_count: 3                # 选填：重试次数 默认：3
+  
+  properties:
+    change_state:  # <标记 ID 组，无实际意义>
+      property_id: change_state   # 必填：属性ID
+      description: 变频器运行控制   # 可选：属性描述
+      request_type: command       # 必填：请求类型
+      command:                    # 必填：Modbus命令参数
+        function_code: "10"       # 必填：十六进制 功能码
+        register_address: "0200"  # 必填：十六进制 寄存器地址
+      parse_method:               
+        data_type: enum           # 必填：数据类型
+        data_length: 2            # 必填：数据长度
+        enum_values:              # 必填：枚举值
+          正转运行: "0001"
+          停止: "0005"
