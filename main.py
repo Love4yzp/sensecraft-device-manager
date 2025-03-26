@@ -180,6 +180,7 @@ class DeviceConfigLoader:
                     word_order VARCHAR(20) DEFAULT 'big_endian',
                     scale_factor FLOAT DEFAULT 1.0,
                     value_offset FLOAT DEFAULT 0.0,
+                    read_values JSONB,
                     enum_values JSONB,
                     status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'processing', 'success', 'failed')),
                     session_id VARCHAR(50),
