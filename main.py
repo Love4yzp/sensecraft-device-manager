@@ -182,7 +182,7 @@ class DeviceConfigLoader:
                     value_offset FLOAT DEFAULT 0.0,
                     read_values JSONB,
                     enum_values JSONB,
-                    status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'processing', 'success', 'failed')),
+                    status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'processing', 'retrying','success', 'failed')),
                     session_id VARCHAR(50),
                     retry_count INTEGER DEFAULT 0,
                     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
