@@ -1,0 +1,366 @@
+electricity_meter_1:
+  device_id: electricity_meter_1
+  device_type: Acrel_DTSD1352_C
+  name: 二楼花园油烟机变频器15KW用电
+  system: fume_system
+  location: roof
+  communication_type: meshtastic
+  communication_id: R1000_3
+  connection_type: modbus_rtu
+  connection_params:
+    port_number: '2'
+    slave_address: '3'
+    baud_rate: '9600'
+    parity: None
+    stop_bits: 1
+    data_bits: 8
+    timeout: 3
+    retry_count: 3
+  properties:
+    EPI:
+      property_id: EPI
+      request_type: state
+      description: 正向有功累计值（kwh）
+      command:
+        function_code: '03'
+        register_address: 000A
+      parse_method:
+        data_length: '4'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 1
+        offset: 0
+    AP:
+      property_id: AP
+      request_type: state
+      description: A相功率（W）
+      command:
+        function_code: '03'
+        register_address: '0164'
+      parse_method:
+        data_length: '4'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 1
+        offset: 0
+    BP:
+      property_id: BP
+      request_type: state
+      description: B相功率（W）
+      command:
+        function_code: '03'
+        register_address: '0166'
+      parse_method:
+        data_length: '4'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 1
+        offset: 0
+    CP:
+      property_id: CP
+      request_type: state
+      description: C相功率（W）
+      command:
+        function_code: '03'
+        register_address: '0168'
+      parse_method:
+        data_length: '4'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 1
+        offset: 0
+    ALLP:
+      property_id: ALLP
+      request_type: state
+      description: 合功率（W）
+      command:
+        function_code: '03'
+        register_address: 016A
+      parse_method:
+        data_length: '4'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 1
+        offset: 0
+' breaker_1':
+  device_id: ' breaker_1'
+  device_type: ' smart_breaker'
+  name: 二楼花园景观照明用电1
+  system: light
+  location: roof
+  communication_type: meshtastic
+  communication_id: R1000_3
+  connection_type: modbus_rtu
+  connection_params:
+    port_number: '1'
+    slave_address: '1'
+    baud_rate: '9600'
+    parity: None
+    stop_bits: 1
+    data_bits: 8
+    timeout: 3
+    retry_count: 3
+  properties:
+    equip_state:
+      property_id: equip_state
+      request_type: state
+      description: 设备状态
+      command:
+        function_code: '03'
+        register_address: '0232'
+      parse_method:
+        data_length: '2'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 1
+        offset: 0
+    control_gate:
+      property_id: control_gate
+      request_type: command
+      description: 分合闸控制
+      command:
+        function_code: '06'
+        register_address: '0203'
+      parse_method:
+        data_length: '2'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: enum
+        enum_values:
+          开关故障自检: '0'
+          漏电自检: '1'
+          脱扣: '2'
+          合闸: '3'
+          分闸: '4'
+          闭锁: '5'
+          自检: '6'
+          解除闭锁: '7'
+          复位: '10'
+    ALLP:
+      property_id: ALLP
+      request_type: state
+      description: |
+        合相有功功率
+      command:
+        function_code: '03'
+        register_address: 318
+      parse_method:
+        data_length: '4'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 1
+        offset: 0
+    EPI:
+      property_id: EPI
+      request_type: state
+      description: 当前正向总有功电能
+      command:
+        function_code: '03'
+        register_address: 04BC
+      parse_method:
+        data_length: '4'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 1
+        offset: 0
+' breaker_2':
+  device_id: ' breaker_2'
+  device_type: ' smart_breaker'
+  name: 二楼花园景观照明用电2
+  system: light
+  location: roof
+  communication_type: meshtastic
+  communication_id: R1000_3
+  connection_type: modbus_rtu
+  connection_params:
+    port_number: '1'
+    slave_address: '2'
+    baud_rate: '9600'
+    parity: None
+    stop_bits: 1
+    data_bits: 8
+    timeout: 3
+    retry_count: 3
+  properties:
+    equip_state:
+      property_id: equip_state
+      request_type: state
+      description: 设备状态
+      command:
+        function_code: '03'
+        register_address: '0232'
+      parse_method:
+        data_length: '2'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 1
+        offset: 0
+    control_gate:
+      property_id: control_gate
+      request_type: command
+      description: 分合闸控制
+      command:
+        function_code: '06'
+        register_address: '0203'
+      parse_method:
+        data_length: '2'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: enum
+        enum_values:
+          开关故障自检: '0'
+          漏电自检: '1'
+          脱扣: '2'
+          合闸: '3'
+          分闸: '4'
+          闭锁: '5'
+          自检: '6'
+          解除闭锁: '7'
+          复位: '10'
+    ALLP:
+      property_id: ALLP
+      request_type: state
+      description: |
+        合相有功功率
+      command:
+        function_code: '03'
+        register_address: 318
+      parse_method:
+        data_length: '4'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 1
+        offset: 0
+    EPI:
+      property_id: EPI
+      request_type: state
+      description: 当前正向总有功电能
+      command:
+        function_code: '03'
+        register_address: 04BC
+      parse_method:
+        data_length: '4'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 1
+        offset: 0
+VFD_1:
+  device_id: VFD_1
+  device_type: delta_VFD_TD500_TO150G3
+  name: 二楼花园油烟机变频器15KW
+  system: fume_system
+  location: roof
+  communication_type: meshtastic
+  communication_id: R1000_3
+  connection_type: modbus_rtu
+  connection_params:
+    port_number: '3'
+    slave_address: '1'
+    baud_rate: '9600'
+    parity: None
+    stop_bits: 1
+    data_bits: 8
+    timeout: 3
+    retry_count: 3
+  properties:
+    frequency_num:
+      property_id: frequency_num
+      request_type: state
+      description: 读运行频率
+      command:
+        function_code: '03'
+        register_address: '1001'
+      parse_method:
+        data_length: '2'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 1
+        offset: 0
+    state_check:
+      property_id: state_check
+      request_type: state
+      description: 读变频器状态
+      command:
+        function_code: '03'
+        register_address: '3000'
+      parse_method:
+        data_length: '2'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 1
+        offset: 0
+    change_state:
+      property_id: change_state
+      request_type: command
+      description: 修改变频器开关状态
+      command:
+        function_code: '06'
+        register_address: '200'
+      parse_method:
+        data_length: '2'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: enum
+        enum_values:
+          正转运行: '0001'
+          停止: '0005'
+'noise_meter_1':
+  device_id: 'noise_meter_1'
+  device_type: ' noise_meter'
+  name: 噪声
+  system: fume_system
+  location: roof
+  communication_type: meshtastic
+  communication_id: R1000_8
+  connection_type: modbus_rtu
+  connection_params:
+    port_number: '1'
+    slave_address: '1'
+    baud_rate: '9600'
+    parity: None
+    stop_bits: 1
+    data_bits: 8
+    timeout: 3
+    retry_count: 3
+  properties:
+    noise_level:
+      property_id: noise_level
+      request_type: state
+      description: 噪声强度
+      command:
+        function_code: '03'
+        register_address: '0'
+      parse_method:
+        data_length: '2'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 1
+        offset: 0
+    noise_level_2:
+      property_id: noise_level_2
+      request_type: state
+      description: 噪声强度
+      command:
+        function_code: '03'
+        register_address: '0'
+      parse_method:
+        data_length: '2'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 1
+        offset: 0

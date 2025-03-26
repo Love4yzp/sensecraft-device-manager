@@ -26,6 +26,20 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+def clean_dict(d: Dict) -> Dict:
+    """递归清理字典中所有的字符串值和键的空格"""
+    if not isinstance(d, dict):
+        return d.strip() if isinstance(d, str) else d
+        
+    return {
+        k.strip() if isinstance(k, str) else k: 
+        clean_dict(v) if isinstance(v, dict) else (
+            v.strip() if isinstance(v, str) else v
+        )
+        for k, v in d.items()
+    }
+
+
 class DeviceConfigLoader:
     """设备配置加载器类"""
     
@@ -117,10 +131,13 @@ class DeviceConfigLoader:
                     communication_type VARCHAR(20) NOT NULL,
                     communication_id VARCHAR(50) NOT NULL,
                     connection_type VARCHAR(20) NOT NULL,
+                    status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending','ready')),
                     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
                     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
                 );
 
+                CREATE INDEX IF NOT EXISTS idx_devices_status ON devices(status);
+                             
                 CREATE INDEX IF NOT EXISTS idx_devices_communication_type 
                 ON devices(communication_type);
                 
@@ -164,8 +181,9 @@ class DeviceConfigLoader:
                     scale_factor FLOAT DEFAULT 1.0,
                     value_offset FLOAT DEFAULT 0.0,
                     enum_values JSONB,
-                    status VARCHAR(20) DEFAULT 'pending',
-                    request_time TIMESTAMP WITH TIME ZONE,
+                    status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'processing', 'success', 'failed')),
+                    session_id VARCHAR(50),
+                    retry_count INTEGER DEFAULT 0,
                     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
                     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
                     UNIQUE(device_id, property_id)
@@ -175,6 +193,8 @@ class DeviceConfigLoader:
                 ON device_properties(device_id);
                 CREATE INDEX IF NOT EXISTS idx_device_properties_status
                 ON device_properties(status);
+                CREATE INDEX IF NOT EXISTS idx_device_properties_session_id
+                ON device_properties(session_id);
             """)
 
             # 创建更新时间触发器
@@ -232,7 +252,8 @@ class DeviceConfigLoader:
                 raise FileNotFoundError(f"配置文件不存在: {yaml_file}")
                 
             with open(yaml_path, 'r', encoding='utf-8') as f:
-                return yaml.safe_load(f)
+                data = yaml.safe_load(f)
+                return clean_dict(data)  # 使用新的清理函数
         except Exception as e:
             logger.error(f"YAML文件加载失败: {str(e)}")
             raise
@@ -399,26 +420,30 @@ class DeviceConfigLoader:
         try:
             self.connect_db()
             
-            tables_exist = self.check_tables_exist()
-            
-            if init_db or not tables_exist:
-                if not tables_exist:
+            # 初始化数据库时保持 autocommit 模式
+            if init_db or not self.check_tables_exist():
+                if not self.check_tables_exist():
                     logger.info("数据库表不存在，进行初始化")
                 self.init_database(force=init_db)
-            
+                
             config_data = self.load_yaml(yaml_file)
             
+            # 设置 autocommit 为 False 之前，确保没有活动的事务
+            self.conn.commit()
             self.conn.autocommit = False
             
-            for device_name, device_data in config_data.items():
-                self.update_device(device_name, device_data)
-            
-            self.conn.commit()
-            logger.info("配置更新完成")
-            
-        except Exception as e:
-            if self.conn:
+            try:
+                for device_name, device_data in config_data.items():
+                    self.update_device(device_name, device_data)
+                
+                self.conn.commit()
+                logger.info("配置更新完成")
+                
+            except Exception as e:
                 self.conn.rollback()
+                raise
+                
+        except Exception as e:
             logger.error(f"配置处理失败: {str(e)}")
             raise
         finally:
