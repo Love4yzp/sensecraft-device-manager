@@ -182,6 +182,7 @@ class DeviceConfigLoader:
                     value_offset FLOAT DEFAULT 0.0,
                     read_values JSONB,
                     enum_values JSONB,
+                    last_command_value INTEGER,
                     status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'processing', 'retrying','success', 'failed')),
                     session_id VARCHAR(50),
                     retry_count INTEGER DEFAULT 0,
@@ -401,7 +402,7 @@ class DeviceConfigLoader:
                         word_order = EXCLUDED.word_order,
                         scale_factor = EXCLUDED.scale_factor,
                         value_offset = EXCLUDED.value_offset,
-                        enum_values = EXCLUDED.enum_values
+                        enum_values = EXCLUDED.enum_values,
                 """, property_data)
 
                 logger.info(f"属性 {prop_data['property_id']} 更新成功")
