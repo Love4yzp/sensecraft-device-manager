@@ -166,7 +166,7 @@ electricity_meter_1:
         function_code: '03'
         register_address: 04BC
       parse_method:
-        data_length: '2'
+        data_length: '4'
         byte_order: big_endian
         word_order: big_endian
         data_type: numeric
