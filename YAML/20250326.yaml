@@ -199,7 +199,7 @@ electricity_meter_1:
         function_code: '03'
         register_address: '0232'
       parse_method:
-        data_length: '2'
+        data_length: '1'
         byte_order: big_endian
         word_order: big_endian
         data_type: numeric
@@ -213,7 +213,7 @@ electricity_meter_1:
         function_code: '06'
         register_address: '0203'
       parse_method:
-        data_length: '2'
+        data_length: '1'
         byte_order: big_endian
         word_order: big_endian
         data_type: enum
