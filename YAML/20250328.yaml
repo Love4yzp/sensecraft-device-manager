@@ -646,7 +646,7 @@ VFD_1:
         function_code: '03'
         register_address: '1001'
       parse_method:
-        data_length: '8'
+        data_length: '4'
         byte_order: big_endian
         word_order: big_endian
         data_type: numeric
@@ -660,7 +660,7 @@ VFD_1:
         function_code: '3'
         register_address: '3000'
       parse_method:
-        data_length: '8'
+        data_length: '4'
         byte_order: big_endian
         word_order: big_endian
         data_type: numeric
@@ -674,7 +674,7 @@ VFD_1:
         function_code: '06'
         register_address: '200'
       parse_method:
-        data_length: '8'
+        data_length: '4'
         byte_order: big_endian
         word_order: big_endian
         data_type: enum
