@@ -1,0 +1,89 @@
+ap2:
+  device_id: ap2
+  device_type: Acrel_DTSD1352_C
+  name: 配电箱 AP2
+  system: fume_system
+  location: roof
+  communication_type: lorawan
+  communication_id: datalogger_1
+  connection_type: modbus_rtu
+  connection_params:
+    port_number: '2'
+    slave_address: '3'
+    baud_rate: '9600'
+    parity: None
+    stop_bits: 1
+    data_bits: 8
+    timeout: 3
+    retry_count: 3
+  properties:
+    EPI:
+      property_id: EPI
+      request_type: state
+      description: 正向有功累计值（kwh）
+      command:
+        function_code: '03'
+        register_address: 000A
+      parse_method:
+        data_length: '4'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 1
+        offset: 0
+    AP:
+      property_id: AP
+      request_type: state
+      description: A相功率（W）
+      command:
+        function_code: '03'
+        register_address: '0164'
+      parse_method:
+        data_length: '4'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 1
+        offset: 0
+    BP:
+      property_id: BP
+      request_type: state
+      description: B相功率（W）
+      command:
+        function_code: '03'
+        register_address: '0166'
+      parse_method:
+        data_length: '4'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 1
+        offset: 0
+    CP:
+      property_id: CP
+      request_type: state
+      description: C相功率（W）
+      command:
+        function_code: '03'
+        register_address: '0168'
+      parse_method:
+        data_length: '4'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 1
+        offset: 0
+    ALLP:
+      property_id: ALLP
+      request_type: state
+      description: 合功率（W）
+      command:
+        function_code: '03'
+        register_address: 016A
+      parse_method:
+        data_length: '4'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 1
+        offset: 0

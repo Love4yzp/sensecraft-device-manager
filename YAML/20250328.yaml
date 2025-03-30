@@ -1,0 +1,683 @@
+electricity_meter_1:
+  device_id: electricity_meter_1
+  device_type: Acrel_DTSD1352_C
+  name: 二楼花园油烟机变频器15KW用电
+  system: fume_system
+  location: roof
+  communication_type: meshtastic
+  communication_id: R1000_3
+  connection_type: modbus_rtu
+  connection_params:
+    port_number: '2'
+    slave_address: '3'
+    baud_rate: '9600'
+    parity: None
+    stop_bits: 1
+    data_bits: 8
+    timeout: 3
+    retry_count: 3
+  properties:
+    EPI:
+      property_id: EPI
+      request_type: state
+      description: 正向有功累计值（kwh）
+      command:
+        function_code: '03'
+        register_address: 000A
+      parse_method:
+        data_length: '4'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 1
+        offset: 0
+    AP:
+      property_id: AP
+      request_type: state
+      description: A相功率（W）
+      command:
+        function_code: '03'
+        register_address: '0164'
+      parse_method:
+        data_length: '4'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 1
+        offset: 0
+    BP:
+      property_id: BP
+      request_type: state
+      description: B相功率（W）
+      command:
+        function_code: '03'
+        register_address: '0166'
+      parse_method:
+        data_length: '4'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 1
+        offset: 0
+    CP:
+      property_id: CP
+      request_type: state
+      description: C相功率（W）
+      command:
+        function_code: '03'
+        register_address: 168
+      parse_method:
+        data_length: '4'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 1
+        offset: 0
+    ALLP:
+      property_id: ALLP
+      request_type: state
+      description: 合功率（W）
+      command:
+        function_code: '03'
+        register_address: 016A
+      parse_method:
+        data_length: '4'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 1
+        offset: 0
+' breaker_1':
+  device_id: ' breaker_1'
+  device_type: ' smart_breaker'
+  name: 二楼花园景观照明用电1
+  system: light
+  location: roof
+  communication_type: meshtastic
+  communication_id: R1000_3
+  connection_type: modbus_rtu
+  connection_params:
+    port_number: '1'
+    slave_address: '1'
+    baud_rate: '9600'
+    parity: None
+    stop_bits: 1
+    data_bits: 8
+    timeout: 3
+    retry_count: 3
+  properties:
+    equip_state:
+      property_id: equip_state
+      request_type: state
+      description: 设备状态
+      command:
+        function_code: '03'
+        register_address: '0232'
+      parse_method:
+        data_length: '2'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: switch
+        bit_switches:
+          bit0:
+            byte: 0
+            position: 0
+            name: 开关寿命报警
+            off_label: 关
+            on_label: 开
+          bit1:
+            byte: 0
+            position: 1
+            name: 开关寿命预警
+            off_label: 关
+            on_label: 开
+          bit2:
+            byte: 0
+            position: 2
+            name: 内部温度预警
+            off_label: 关
+            on_label: 开
+          bit3:
+            byte: 0
+            position: 3
+            name: 漏电报警
+            off_label: 关
+            on_label: 开
+          bit4:
+            byte: 0
+            position: 4
+            name: 485通讯故障
+            off_label: 关
+            on_label: 开
+          bit5:
+            byte: 0
+            position: 5
+            name: 漏电故障
+            off_label: 关
+            on_label: 开
+          bit6:
+            byte: 0
+            position: 6
+            name: 当前运行时段4(谷时段)
+            off_label: 关
+            on_label: 开
+          bit7:
+            byte: 0
+            position: 7
+            name: 当前运行时段3(平时段)
+            off_label: 关
+            on_label: 开
+          bit8:
+            byte: 1
+            position: 0
+            name: 当前运行时段2(峰时段)
+            off_label: 关
+            on_label: 开
+          bit9:
+            byte: 1
+            position: 1
+            name: 当前运行时段1(尖时段)
+            off_label: 关
+            on_label: 开
+          bit10:
+            byte: 1
+            position: 2
+            name: 时钟电池欠压
+            off_label: 关
+            on_label: 开
+          bit11:
+            byte: 1
+            position: 3
+            name: 费控欠费
+            off_label: 关
+            on_label: 开
+          bit12:
+            byte: 1
+            position: 4
+            name: 漏电自检中
+            off_label: 关
+            on_label: 开
+          bit13:
+            byte: 1
+            position: 5
+            name: 锁定状态
+            off_label: 关
+            on_label: 开
+          bit14:
+            byte: 1
+            position: 6
+            name: 分闸状态
+            off_label: 关
+            on_label: 开
+          bit15:
+            byte: 1
+            position: 7
+            name: 合闸状态
+            off_label: 关
+            on_label: 开
+    control_gate:
+      property_id: control_gate
+      request_type: command
+      description: 分合闸控制
+      command:
+        function_code: '06'
+        register_address: '0203'
+      parse_method:
+        data_length: '2'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: switch
+        bit_switches:
+          bit0:
+            byte: 0
+            position: 0
+            name: 开关故障自检
+            off_label: 关
+            on_label: 开
+          bit1:
+            byte: 0
+            position: 1
+            name: 漏电自检
+            off_label: 关
+            on_label: 开
+          bit2:
+            byte: 0
+            position: 2
+            name: 脱扣
+            off_label: 关
+            on_label: 开
+          bit3:
+            byte: 0
+            position: 3
+            name: 合闸
+            off_label: 关
+            on_label: 开
+          bit4:
+            byte: 0
+            position: 4
+            name: 分闸
+            off_label: 关
+            on_label: 开
+          bit5:
+            byte: 0
+            position: 5
+            name: 闭锁
+            off_label: 关
+            on_label: 开
+          bit6:
+            byte: 0
+            position: 6
+            name: 自检
+            off_label: 关
+            on_label: 开
+          bit7:
+            byte: 0
+            position: 7
+            name: 解除闭锁
+            off_label: 关
+            on_label: 开
+          bit8:
+            byte: 1
+            position: 0
+            name: ''
+            off_label: 关
+            on_label: 开
+          bit9:
+            byte: 1
+            position: 1
+            name: ''
+            off_label: 关
+            on_label: 开
+          bit10:
+            byte: 1
+            position: 2
+            name: 复位
+            off_label: 关
+            on_label: 开
+          bit11:
+            byte: 1
+            position: 3
+            name: 工作频率切换为50HZ
+            off_label: 关
+            on_label: 开
+          bit12:
+            byte: 1
+            position: 4
+            name: 工作频率切换为60HZ
+            off_label: 关
+            on_label: 开
+          bit13:
+            byte: 1
+            position: 5
+            name: 本地控制模式
+            off_label: 关
+            on_label: 开
+          bit14:
+            byte: 1
+            position: 6
+            name: 本地远程控制模式
+            off_label: 关
+            on_label: 开
+          bit15:
+            byte: 1
+            position: 7
+            name: ''
+            off_label: 关
+            on_label: 开
+    ALLP:
+      property_id: ALLP
+      request_type: state
+      description: |
+        合相有功功率
+      command:
+        function_code: '03'
+        register_address: 318
+      parse_method:
+        data_length: '4'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 0.01
+        offset: 0
+    EPI:
+      property_id: EPI
+      request_type: state
+      description: 当前正向总有功电能
+      command:
+        function_code: '03'
+        register_address: 04BC
+      parse_method:
+        data_length: '4'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 0.001
+        offset: 0
+' breaker_2':
+  device_id: ' breaker_2'
+  device_type: ' smart_breaker'
+  name: 二楼花园景观照明用电 2
+  system: light
+  location: roof
+  communication_type: meshtastic
+  communication_id: R1000_3
+  connection_type: modbus_rtu
+  connection_params:
+    port_number: '1'
+    slave_address: '2'
+    baud_rate: '9600'
+    parity: None
+    stop_bits: 1
+    data_bits: 8
+    timeout: 3
+    retry_count: 3
+  properties:
+    equip_state:
+      property_id: equip_state
+      request_type: state
+      description: 设备状态
+      command:
+        function_code: '03'
+        register_address: '0232'
+      parse_method:
+        data_length: '2'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: switch
+        bit_switches:
+          bit0:
+            byte: 0
+            position: 0
+            name: 开关寿命报警
+            off_label: 关
+            on_label: 开
+          bit1:
+            byte: 0
+            position: 1
+            name: 开关寿命预警
+            off_label: 关
+            on_label: 开
+          bit2:
+            byte: 0
+            position: 2
+            name: 内部温度预警
+            off_label: 关
+            on_label: 开
+          bit3:
+            byte: 0
+            position: 3
+            name: 漏电报警
+            off_label: 关
+            on_label: 开
+          bit4:
+            byte: 0
+            position: 4
+            name: 485通讯故障
+            off_label: 关
+            on_label: 开
+          bit5:
+            byte: 0
+            position: 5
+            name: 漏电故障
+            off_label: 关
+            on_label: 开
+          bit6:
+            byte: 0
+            position: 6
+            name: 当前运行时段4(谷时段)
+            off_label: 关
+            on_label: 开
+          bit7:
+            byte: 0
+            position: 7
+            name: 当前运行时段3(平时段)
+            off_label: 关
+            on_label: 开
+          bit8:
+            byte: 1
+            position: 0
+            name: 当前运行时段2(峰时段)
+            off_label: 关
+            on_label: 开
+          bit9:
+            byte: 1
+            position: 1
+            name: 当前运行时段1(尖时段)
+            off_label: 关
+            on_label: 开
+          bit10:
+            byte: 1
+            position: 2
+            name: 时钟电池欠压
+            off_label: 关
+            on_label: 开
+          bit11:
+            byte: 1
+            position: 3
+            name: 费控欠费
+            off_label: 关
+            on_label: 开
+          bit12:
+            byte: 1
+            position: 4
+            name: 漏电自检中
+            off_label: 关
+            on_label: 开
+          bit13:
+            byte: 1
+            position: 5
+            name: 锁定状态
+            off_label: 关
+            on_label: 开
+          bit14:
+            byte: 1
+            position: 6
+            name: 分闸状态
+            off_label: 关
+            on_label: 开
+          bit15:
+            byte: 1
+            position: 7
+            name: 合闸状态
+            off_label: 关
+            on_label: 开
+    control_gate:
+      property_id: control_gate
+      request_type: command
+      description: 分合闸控制
+      command:
+        function_code: '06'
+        register_address: '0203'
+      parse_method:
+        data_length: '2'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: switch
+        bit_switches:
+          bit0:
+            byte: 0
+            position: 0
+            name: 开关故障自检
+            off_label: 关
+            on_label: 开
+          bit1:
+            byte: 0
+            position: 1
+            name: 漏电自检
+            off_label: 关
+            on_label: 开
+          bit2:
+            byte: 0
+            position: 2
+            name: 脱扣
+            off_label: 关
+            on_label: 开
+          bit3:
+            byte: 0
+            position: 3
+            name: 合闸
+            off_label: 关
+            on_label: 开
+          bit4:
+            byte: 0
+            position: 4
+            name: 分闸
+            off_label: 关
+            on_label: 开
+          bit5:
+            byte: 0
+            position: 5
+            name: 闭锁
+            off_label: 关
+            on_label: 开
+          bit6:
+            byte: 0
+            position: 6
+            name: 自检
+            off_label: 关
+            on_label: 开
+          bit7:
+            byte: 0
+            position: 7
+            name: 解除闭锁
+            off_label: 关
+            on_label: 开
+          bit8:
+            byte: 1
+            position: 0
+            name: ''
+            off_label: 关
+            on_label: 开
+          bit9:
+            byte: 1
+            position: 1
+            name: ''
+            off_label: 关
+            on_label: 开
+          bit10:
+            byte: 1
+            position: 2
+            name: 复位
+            off_label: 关
+            on_label: 开
+          bit11:
+            byte: 1
+            position: 3
+            name: 工作频率切换为50HZ
+            off_label: 关
+            on_label: 开
+          bit12:
+            byte: 1
+            position: 4
+            name: 工作频率切换为60HZ
+            off_label: 关
+            on_label: 开
+          bit13:
+            byte: 1
+            position: 5
+            name: 本地控制模式
+            off_label: 关
+            on_label: 开
+          bit14:
+            byte: 1
+            position: 6
+            name: 本地远程控制模式
+            off_label: 关
+            on_label: 开
+          bit15:
+            byte: 1
+            position: 7
+            name: ''
+            off_label: 关
+            on_label: 开
+    ALLP:
+      property_id: ALLP
+      request_type: state
+      description: |
+        合相有功功率
+      command:
+        function_code: '03'
+        register_address: 318
+      parse_method:
+        data_length: '4'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 0.01
+        offset: 0
+    EPI:
+      property_id: EPI
+      request_type: state
+      description: 当前正向总有功电能
+      command:
+        function_code: '03'
+        register_address: 04BC
+      parse_method:
+        data_length: '4'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 0.001
+        offset: 0
+VFD_1:
+  device_id: VFD_1
+  device_type: delta_VFD_TD500_TO150G3
+  name: 二楼花园油烟机变频器15KW
+  system: fume_system
+  location: roof
+  communication_type: meshtastic
+  communication_id: R1000_3
+  connection_type: modbus_rtu
+  connection_params:
+    port_number: '3'
+    slave_address: '1'
+    baud_rate: '9600'
+    parity: None
+    stop_bits: 1
+    data_bits: 8
+    timeout: 3
+    retry_count: 3
+  properties:
+    frequency_num:
+      property_id: frequency_num
+      request_type: state
+      description: 读运行频率
+      command:
+        function_code: '03'
+        register_address: '1001'
+      parse_method:
+        data_length: '8'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 1
+        offset: 0
+    state_check:
+      property_id: state_check
+      request_type: state
+      description: 读变频器状态
+      command:
+        function_code: '3'
+        register_address: '3000'
+      parse_method:
+        data_length: '8'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 1
+        offset: 0
+    change_state:
+      property_id: change_state
+      request_type: command
+      description: ''
+      command:
+        function_code: '06'
+        register_address: '200'
+      parse_method:
+        data_length: '8'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: enum
+        enum_values:
+          正转运行: '0001'
+          停止: '0005'

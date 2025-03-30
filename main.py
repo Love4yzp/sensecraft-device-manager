@@ -174,12 +174,13 @@ class DeviceConfigLoader:
                     description TEXT,
                     function_code VARCHAR(10) NOT NULL,
                     register_address VARCHAR(10) NOT NULL,
-                    data_type VARCHAR(20) NOT NULL,
                     data_length INTEGER NOT NULL,
                     byte_order VARCHAR(20) DEFAULT 'big_endian',
                     word_order VARCHAR(20) DEFAULT 'big_endian',
                     scale_factor FLOAT DEFAULT 1.0,
                     value_offset FLOAT DEFAULT 0.0,
+                    data_type VARCHAR(20) NOT NULL,
+                    bit_switches JSONB,
                     read_values JSONB,
                     enum_values JSONB,
                     last_command_value INTEGER,
@@ -375,21 +376,24 @@ class DeviceConfigLoader:
                     'value_offset': prop_data['parse_method'].get('offset', 0.0),
                     'enum_values': json.dumps(
                         prop_data['parse_method'].get('enum_values'))
-                    if 'enum_values' in prop_data['parse_method'] else None
+                    if 'enum_values' in prop_data['parse_method'] else None,
+                    'bit_switches': json.dumps(
+                        prop_data['parse_method'].get('bit_switches'))
+                    if 'bit_switches' in prop_data['parse_method'] else None
                 }
 
                 self.cur.execute("""
                     INSERT INTO device_properties (
                         device_id, property_id, request_type, description,
-                        function_code, register_address, data_type, data_length,
-                        byte_order, word_order, scale_factor, value_offset, 
+                        function_code, register_address, data_type,bit_switches,
+                        data_length, byte_order, word_order, scale_factor, value_offset, 
                         enum_values
                     ) VALUES (
                         %(device_id)s, %(property_id)s, %(request_type)s, 
                         %(description)s, %(function_code)s, 
-                        %(register_address)s, %(data_type)s, %(data_length)s,
-                        %(byte_order)s, %(word_order)s, %(scale_factor)s, 
-                        %(value_offset)s, %(enum_values)s
+                        %(register_address)s, %(data_type)s, %(bit_switches)s,
+                        %(data_length)s, %(byte_order)s, %(word_order)s, 
+                        %(scale_factor)s, %(value_offset)s, %(enum_values)s
                     )
                     ON CONFLICT (device_id, property_id) DO UPDATE SET
                         request_type = EXCLUDED.request_type,
@@ -397,6 +401,7 @@ class DeviceConfigLoader:
                         function_code = EXCLUDED.function_code,
                         register_address = EXCLUDED.register_address,
                         data_type = EXCLUDED.data_type,
+                        bit_switches = EXCLUDED.bit_switches,
                         data_length = EXCLUDED.data_length,
                         byte_order = EXCLUDED.byte_order,
                         word_order = EXCLUDED.word_order,
