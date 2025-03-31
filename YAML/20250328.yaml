@@ -646,7 +646,7 @@ VFD_1:
         function_code: '03'
         register_address: '1001'
       parse_method:
-        data_length: '4'
+        data_length: '2'
         byte_order: big_endian
         word_order: big_endian
         data_type: numeric
