@@ -310,7 +310,7 @@ VFD_1:
       description: 修改变频器开关状态
       command:
         function_code: '06'
-        register_address: '200'
+        register_address: '2000'
       parse_method:
         data_length: '2'
         byte_order: big_endian
