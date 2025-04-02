@@ -1,0 +1,33 @@
+DTS6158-1:
+  device_id: DTS6158-1
+  device_type: DTS6158
+  name: 配电柜1(Z-AP2)
+  system: ''
+  location: 西配电房
+  communication_type: meshtastic
+  communication_id: R1000_6
+  connection_type: modbus_rtu
+  connection_params:
+    port_number: '1'
+    slave_address: '42'
+    baud_rate: '9600'
+    parity: None
+    stop_bits: 1
+    data_bits: 8
+    timeout: 3
+    retry_count: 3
+  properties:
+    Power_Consumption_1:
+      property_id: Power_Consumption_1
+      request_type: state
+      description: 当前总有功电能
+      command:
+        function_code: '03'
+        register_address: 001D
+      parse_method:
+        data_length: '2'
+        byte_order: big_endian
+        word_order: big_endian
+        data_type: numeric
+        scale_factor: 1
+        offset: 0

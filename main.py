@@ -198,6 +198,8 @@ class DeviceConfigLoader:
                 ON device_properties(status);
                 CREATE INDEX IF NOT EXISTS idx_device_properties_session_id
                 ON device_properties(session_id);
+                CREATE INDEX IF NOT EXISTS idx_device_properties_updated_at
+                ON device_properties(updated_at);
             """)
 
             # 创建更新时间触发器
