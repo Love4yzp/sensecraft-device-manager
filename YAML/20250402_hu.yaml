@@ -5,7 +5,7 @@ DTSD1352-CT-1:
   system: ''
   location: 东配电房
   communication_type: meshtastic
-  communication_id: R1000_2
+  communication_id: R1000_6
   connection_type: modbus_rtu
   connection_params:
     port_number: '1'
@@ -23,7 +23,7 @@ DTSD1352-CT-1:
       description: 当前正向总有功电能
       command:
         function_code: '03'
-        register_address: 000A
+        register_address: '000A'
       parse_method:
         data_length: '4'
         byte_order: big_endian
